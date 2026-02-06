@@ -1,0 +1,13 @@
+body {
+	margin: 0;
+	background: #f8f4ed;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+button {
+	font-family: inherit;
+}
