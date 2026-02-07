@@ -93,6 +93,11 @@
 	color: var(--muted);
 }
 
+.btn--small {
+	padding: 8px 14px;
+	font-size: 0.85rem;
+}
+
 .hero__stats {
 	display: flex;
 	gap: 24px;
@@ -153,11 +158,39 @@
 	border-radius: 999px;
 	padding: 6px 12px;
 	font-size: 0.85rem;
+	border: none;
+	font-family: inherit;
+}
+
+.badge--button {
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.badge--button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 14px rgba(30, 27, 22, 0.12);
+}
+
+.badge--active {
+	background: var(--accent);
+	color: #fff;
 }
 
 .hero__note {
 	color: var(--muted);
 	margin-top: 18px;
+	font-size: 0.9rem;
+}
+
+.hero__filter {
+	margin-top: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	color: var(--muted);
 	font-size: 0.9rem;
 }
 
@@ -206,6 +239,10 @@
 	display: flex;
 	flex-direction: column;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card--clickable {
+	cursor: pointer;
 }
 
 .card:hover {
@@ -271,6 +308,95 @@
 
 .meta:hover {
 	color: var(--accent);
+}
+
+.detail {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+
+.detail__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 32px;
+	align-items: start;
+}
+
+.detail__content h1 {
+	font-family: 'Fraunces', serif;
+	font-size: clamp(2.2rem, 4vw, 3.2rem);
+	margin: 12px 0 10px;
+}
+
+.detail__eyebrow {
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	font-size: 0.75rem;
+	color: var(--muted);
+	font-weight: 600;
+}
+
+.detail__address {
+	color: var(--muted);
+	margin: 0 0 18px;
+}
+
+.detail__meta {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.detail__type {
+	font-weight: 600;
+	color: var(--muted);
+}
+
+.detail__description {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin: 20px 0;
+	color: var(--muted);
+}
+
+.detail__description p {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.detail__contacts {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.detail__media {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.detail__media img {
+	width: 100%;
+	border-radius: var(--radius-lg);
+	object-fit: cover;
+	min-height: 220px;
+}
+
+.detail__map {
+	background: #fff;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: 0 18px 32px rgba(31, 25, 18, 0.14);
+}
+
+.detail__map iframe {
+	border: 0;
+	width: 100%;
+	height: 280px;
 }
 
 @media (max-width: 720px) {

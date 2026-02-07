@@ -1,287 +1,222 @@
+import { useMemo, useState } from 'react'
 import './App.css'
 
-const services = [
+const comunas = [
+	'Stgo centro',
+	'San Miguel',
+	'Las Condes',
+	'Ñuñoa',
+	'Providencia',
+	'La Reina',
+	'Independencia',
+]
+
+const serviceTemplates = [
 	{
 		type: 'Gasfiteria',
-		items: [
-			{
-				title: 'Gasfiter Express Centro',
-				phone: '+56 9 6123 4455',
-				email: 'contacto@gasfitercentro.cl',
-				comuna: 'Santiago Centro',
-				description:
-					'Reparacion de fugas, griferia y calefont con atencion en el dia. Especialistas en edificios antiguos.',
-				image:
-					'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'AquaFix Pro',
-				phone: '+56 9 7788 1010',
-				email: 'agenda@aquafix.cl',
-				comuna: 'Santiago Centro',
-				description:
-					'Instalaciones completas de banos y cocinas, mantencion preventiva y emergencias 24/7.',
-				image:
-					'https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Gasfiteria Almagro',
-				phone: '+56 2 2890 3322',
-				email: 'hola@almagrogas.cl',
-				comuna: 'Santiago Centro',
-				description:
-					'Deteccion de filtraciones con camara termica y reparaciones certificadas.',
-				image:
-					'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Gasfiter Pro',
+		emailDomain: 'gasfiterpro.cl',
+		description:
+			'Reparacion de fugas, griferia y calefont con atencion programada y soporte de emergencia.',
+		image:
+			'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Cerrajeria',
-		items: [
-			{
-				title: 'Cerrajeros La Pintana',
-				phone: '+56 9 5544 7788',
-				email: 'urgencias@cerralapintana.cl',
-				comuna: 'La Pintana',
-				description:
-					'Aperturas sin dano, cambios de combinacion y refuerzo de puertas metalicas.',
-				image:
-					'https://images.unsplash.com/photo-1516822003754-cca485356ecb?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Llaves y Seguridad Sur',
-				phone: '+56 9 6677 2233',
-				email: 'info@llavessur.cl',
-				comuna: 'La Pintana',
-				description:
-					'Duplicado de llaves, cerraduras inteligentes y asesoria en seguridad domiciliaria.',
-				image:
-					'https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Llaves Seguras',
+		emailDomain: 'llavesseguras.cl',
+		description:
+			'Aperturas sin dano, cambios de combinacion y refuerzo de cerraduras residenciales.',
+		image:
+			'https://images.unsplash.com/photo-1516822003754-cca485356ecb?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Abogacia',
-		items: [
-			{
-				title: 'Estudio Legal La Pintana',
-				phone: '+56 2 2456 9911',
-				email: 'contacto@legalpintana.cl',
-				comuna: 'La Pintana',
-				description:
-					'Derecho de familia y laboral con orientacion gratuita en primera consulta.',
-				image:
-					'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Abogados Cercanos',
-				phone: '+56 9 9900 1122',
-				email: 'agenda@abogadocercano.cl',
-				comuna: 'La Pintana',
-				description:
-					'Defensa civil y asesorias para pymes con seguimiento semanal del caso.',
-				image:
-					'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Juristas del Sur',
-				phone: '+56 9 8855 3322',
-				email: 'equipo@juristassur.cl',
-				comuna: 'La Pintana',
-				description:
-					'Asesorias en contratos, cobranza y mediacion comunitaria.',
-				image:
-					'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Estudio Legal',
+		emailDomain: 'estudiolegal.cl',
+		description:
+			'Asesorias en derecho civil, familia y laboral con seguimiento mensual de casos.',
+		image:
+			'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Electricidad',
-		items: [
-			{
-				title: 'Electro 24/7',
-				phone: '+56 9 7432 1010',
-				email: 'turnos@electro247.cl',
-				comuna: 'Estacion Central',
-				description:
-					'Tableros, cortocircuitos y certificacion SEC para viviendas.',
-				image:
-					'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Voltaje Seguro',
-				phone: '+56 2 2788 9090',
-				email: 'contacto@voltajeseguro.cl',
-				comuna: 'Quinta Normal',
-				description:
-					'Iluminacion LED, automatizacion y mantencion industrial ligera.',
-				image:
-					'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Electro Asistencia',
+		emailDomain: 'electroasistencia.cl',
+		description:
+			'Tableros, cortocircuitos y certificacion SEC para hogares y pequenos comercios.',
+		image:
+			'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Pintura',
-		items: [
-			{
-				title: 'Color Urbano',
-				phone: '+56 9 6633 2221',
-				email: 'proyectos@colorurbano.cl',
-				comuna: 'Providencia',
-				description:
-					'Pintura interior, texturas y sellado antihumedad con garantia escrita.',
-				image:
-					'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'PintaMax',
-				phone: '+56 9 7001 8899',
-				email: 'ventas@pintamax.cl',
-				comuna: 'Macul',
-				description:
-					'Pintura de fachadas y rejas, limpieza y proteccion UV.',
-				image:
-					'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Pintura Urbana',
+		emailDomain: 'pinturaurbana.cl',
+		description:
+			'Pintura interior y exterior, sellos antihumedad y acabados premium.',
+		image:
+			'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Jardineria',
-		items: [
-			{
-				title: 'Verde Vivo',
-				phone: '+56 9 6210 4433',
-				email: 'hola@verdevivo.cl',
-				comuna: 'La Florida',
-				description:
-					'Mantencion de jardines, podas y diseño de riego automatico.',
-				image:
-					'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Jardines del Parque',
-				phone: '+56 9 6002 3040',
-				email: 'agenda@jardinesparque.cl',
-				comuna: 'Nunoa',
-				description:
-					'Cesped, fertilizacion y control de plagas con productos eco.',
-				image:
-					'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Jardines Verdes',
+		emailDomain: 'jardinesverdes.cl',
+		description:
+			'Mantencion de jardines, podas y riego automatico para areas residenciales.',
+		image:
+			'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Limpieza',
-		items: [
-			{
-				title: 'LimpioYa',
-				phone: '+56 9 4556 2220',
-				email: 'equipo@limpioya.cl',
-				comuna: 'Independencia',
-				description:
-					'Limpieza profunda post obra y sanitizacion de espacios.',
-				image:
-					'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Brillo Total',
-				phone: '+56 2 2244 5511',
-				email: 'contacto@brillototal.cl',
-				comuna: 'Recoleta',
-				description:
-					'Limpieza de oficinas, vidrios y alfombras con maquinaria industrial.',
-				image:
-					'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Limpieza Total',
+		emailDomain: 'limpiezatotal.cl',
+		description:
+			'Limpieza profunda post obra y sanitizacion de oficinas y hogares.',
+		image:
+			'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Mecanica Automotriz',
-		items: [
-			{
-				title: 'MotorLab',
-				phone: '+56 9 5090 8890',
-				email: 'taller@motorlab.cl',
-				comuna: 'San Miguel',
-				description:
-					'Diagnostico por scanner, frenos y mantencion preventiva.',
-				image:
-					'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Taller Ruta 5',
-				phone: '+56 2 2888 7733',
-				email: 'contacto@tallerruta5.cl',
-				comuna: 'San Bernardo',
-				description:
-					'Mecanica general, cambios de aceite y alineacion computarizada.',
-				image:
-					'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Motor Expert',
+		emailDomain: 'motorexpert.cl',
+		description:
+			'Diagnostico por scanner, frenos y mantencion preventiva para todo tipo de vehiculos.',
+		image:
+			'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Tecnicos en Computacion',
-		items: [
-			{
-				title: 'PC Rescate',
-				phone: '+56 9 7011 5533',
-				email: 'soporte@pcrescate.cl',
-				comuna: 'Santiago Centro',
-				description:
-					'Formateo, respaldo, limpieza y armado de equipos a medida.',
-				image:
-					'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Byte Soporte',
-				phone: '+56 2 2677 3300',
-				email: 'help@bytesoporte.cl',
-				comuna: 'Providencia',
-				description:
-					'Redes domesticas, impresoras y soporte remoto para pymes.',
-				image:
-					'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Soporte PC',
+		emailDomain: 'soporte-pc.cl',
+		description:
+			'Formateo, respaldo, limpieza y armado de equipos con soporte remoto.',
+		image:
+			'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
 	},
 	{
 		type: 'Fletes y Mudanzas',
-		items: [
-			{
-				title: 'Mudanzas Andes',
-				phone: '+56 9 6122 9900',
-				email: 'cotiza@mudanzasandes.cl',
-				comuna: 'Maipu',
-				description:
-					'Embalaje seguro, subida por escalera y seguros por carga.',
-				image:
-					'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=900&q=80',
-			},
-			{
-				title: 'Fletes Rapid',
-				phone: '+56 2 2333 9090',
-				email: 'contacto@fletesrapid.cl',
-				comuna: 'Quilicura',
-				description:
-					'Fletes express para empresas y traslados por hora.',
-				image:
-					'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=900&q=80',
-			},
-		],
+		baseName: 'Mudanzas Urbanas',
+		emailDomain: 'mudanzasurbanas.cl',
+		description:
+			'Embalaje seguro, traslados por hora y seguro de carga incluido.',
+		image:
+			'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=900&q=80',
 	},
 ]
 
-const stats = [
-	{ label: 'Servicios activos', value: '22' },
-	{ label: 'Comunas cubiertas', value: '12' },
-	{ label: 'Profesiones', value: '10' },
-]
+const services = serviceTemplates.map((template, templateIndex) => {
+	const items = comunas.map((comuna, comunaIndex) => {
+		const index = templateIndex * comunas.length + comunaIndex + 1
+		const phone = `+56 9 ${7000 + index} ${2000 + comunaIndex}`
+		const emailHandle = `contacto${index}`
+		return {
+			id: `${template.type}-${comuna}`,
+			title: `${template.baseName} ${comuna}`,
+			phone,
+			email: `${emailHandle}@${template.emailDomain}`,
+			comuna,
+			description: template.description,
+			image: template.image,
+		}
+	})
 
-const comunaBadges = ['Santiago Centro', 'La Pintana', 'Providencia', 'Nunoa', 'Maipu', 'Quilicura']
+	return {
+		type: template.type,
+		items,
+	}
+})
+
+const comunaBadges = comunas
+const featuredServiceId = 'Gasfiteria-Stgo centro'
+const featuredService = services
+	.flatMap((group) => group.items)
+	.find((item) => item.id === featuredServiceId)
+
+const featuredDetail = {
+	longDescription: [
+		'Servicio especializado en gasfiteria residencial y comercial, con enfoque en diagnostico rapido y soluciones duraderas para instalaciones antiguas y modernas.',
+		'Realizamos cambios de griferia, reparacion de filtraciones, mantencion de calefont y mejoras de presion, siempre con materiales certificados y garantia escrita.',
+		'Atendemos urgencias dentro de Santiago y entregamos informes con recomendaciones para evitar futuras fallas en la red de agua y gas.',
+	],
+	address: 'Alameda 100, Santiago',
+	mapUrl: 'https://www.google.com/maps?q=Alameda%20100%2C%20Santiago%2C%20Chile&output=embed',
+}
 
 function App() {
+	const [selectedComuna, setSelectedComuna] = useState(null)
+	const [selectedServiceId, setSelectedServiceId] = useState(null)
+
+	const filteredGroups = useMemo(() => {
+		if (!selectedComuna) {
+			return services
+		}
+
+		return services
+			.map((group) => ({
+				...group,
+				items: group.items.filter((item) => item.comuna === selectedComuna),
+			}))
+			.filter((group) => group.items.length > 0)
+	}, [selectedComuna])
+
+	const totalServices = services.reduce((acc, group) => acc + group.items.length, 0)
+	const stats = [
+		{ label: 'Servicios activos', value: `${totalServices}` },
+		{ label: 'Comunas cubiertas', value: `${comunas.length}` },
+		{ label: 'Profesiones', value: `${services.length}` },
+	]
+
+	if (selectedServiceId === featuredServiceId && featuredService) {
+		return (
+			<div className="page">
+				<section className="detail">
+					<button
+						className="btn btn--ghost"
+						type="button"
+						onClick={() => setSelectedServiceId(null)}
+					>
+						Volver al directorio
+					</button>
+					<div className="detail__grid">
+						<div className="detail__content">
+							<p className="detail__eyebrow">Detalle del servicio</p>
+							<h1>{featuredService.title}</h1>
+							<p className="detail__address">{featuredDetail.address}</p>
+							<div className="detail__meta">
+								<span className="chip">{featuredService.comuna}</span>
+								<span className="detail__type">{featuredServiceId.split('-')[0]}</span>
+							</div>
+							<div className="detail__description">
+								{featuredDetail.longDescription.map((text) => (
+									<p key={text}>{text}</p>
+								))}
+							</div>
+							<div className="detail__contacts">
+								<a href={`tel:${featuredService.phone}`} className="meta">
+									{featuredService.phone}
+								</a>
+								<a href={`mailto:${featuredService.email}`} className="meta">
+									{featuredService.email}
+								</a>
+							</div>
+						</div>
+						<div className="detail__media">
+							<img src={featuredService.image} alt={featuredService.title} />
+							<div className="detail__map">
+								<iframe
+									title="Mapa Alameda 100"
+									src={featuredDetail.mapUrl}
+									loading="lazy"
+									referrerPolicy="no-referrer-when-downgrade"
+								></iframe>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		)
+	}
+
 	return (
 		<div className="page">
 			<header className="hero">
@@ -312,16 +247,33 @@ function App() {
 				<div className="hero__panel">
 					<div className="hero__card">
 						<div>
-							<p className="hero__card-title">Comunas con mas servicios</p>
+							<p className="hero__card-title">Comunas con servicios</p>
 							<p className="hero__card-sub">Selecciona la zona que necesitas</p>
 						</div>
 						<div className="hero__badges">
 							{comunaBadges.map((comuna) => (
-								<span key={comuna} className="badge">
+								<button
+									key={comuna}
+									className={`badge badge--button${selectedComuna === comuna ? ' badge--active' : ''}`}
+									type="button"
+									onClick={() => setSelectedComuna(comuna)}
+								>
 									{comuna}
-								</span>
+								</button>
 							))}
 						</div>
+						{selectedComuna && (
+							<div className="hero__filter">
+								<span>Filtrando por: {selectedComuna}</span>
+								<button
+									className="btn btn--ghost btn--small"
+									type="button"
+									onClick={() => setSelectedComuna(null)}
+								>
+									Limpiar
+								</button>
+							</div>
+						)}
 						<p className="hero__note">
 							Datos de contacto verificados por cada profesional.
 						</p>
@@ -330,7 +282,7 @@ function App() {
 			</header>
 
 			<main className="directory">
-				{services.map((group) => (
+				{filteredGroups.map((group) => (
 					<section key={group.type} className="group">
 						<div className="group__head">
 							<div>
@@ -345,7 +297,27 @@ function App() {
 						</div>
 						<div className="grid">
 							{group.items.map((service) => (
-								<article key={service.title} className="card">
+								<article
+									key={service.id}
+									className={`card${service.id === featuredServiceId ? ' card--clickable' : ''}`}
+									role={service.id === featuredServiceId ? 'button' : undefined}
+									tabIndex={service.id === featuredServiceId ? 0 : undefined}
+									onClick={() =>
+										service.id === featuredServiceId
+											? setSelectedServiceId(service.id)
+											: null
+									}
+									onKeyDown={(event) => {
+										if (service.id !== featuredServiceId) {
+											return
+										}
+
+										if (event.key === 'Enter' || event.key === ' ') {
+											event.preventDefault()
+											setSelectedServiceId(service.id)
+										}
+									}}
+								>
 									<img src={service.image} alt={service.title} loading="lazy" />
 									<div className="card__body">
 										<div className="card__top">
