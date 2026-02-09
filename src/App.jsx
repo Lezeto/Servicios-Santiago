@@ -127,19 +127,101 @@ const services = serviceTemplates.map((template, templateIndex) => {
 })
 
 const comunaBadges = comunas
-const featuredServiceId = 'Gasfiteria-Stgo centro'
-const featuredService = services
-	.flatMap((group) => group.items)
-	.find((item) => item.id === featuredServiceId)
+const flatServices = services.flatMap((group) => group.items)
+const featuredServiceIds = flatServices.slice(0, 7).map((service) => service.id)
+const mapUrlBase = 'https://www.google.com/maps?q='
 
-const featuredDetail = {
-	longDescription: [
+const detailText = {
+	Gasfiteria: [
 		'Servicio especializado en gasfiteria residencial y comercial, con enfoque en diagnostico rapido y soluciones duraderas para instalaciones antiguas y modernas.',
 		'Realizamos cambios de griferia, reparacion de filtraciones, mantencion de calefont y mejoras de presion, siempre con materiales certificados y garantia escrita.',
 		'Atendemos urgencias dentro de Santiago y entregamos informes con recomendaciones para evitar futuras fallas en la red de agua y gas.',
 	],
-	address: 'Alameda 100, Santiago',
-	mapUrl: 'https://www.google.com/maps?q=Alameda%20100%2C%20Santiago%2C%20Chile&output=embed',
+	Cerrajeria: [
+		'Atencion profesional para aperturas sin dano, cambio de cilindros y refuerzo de puertas residenciales y comerciales.',
+		'Se instalan cerraduras de alta seguridad y se realizan duplicados con registro de llaves.',
+		'Asesoria en seguridad domiciliaria con evaluacion en terreno y presupuesto detallado.',
+	],
+	Abogacia: [
+		'Asesorias integrales en derecho civil, familia y laboral, con enfoque en soluciones claras y tiempos de respuesta rapidos.',
+		'El equipo acompana todo el proceso con informes y seguimiento mensual para cada cliente.',
+		'Se incluyen orientaciones preventivas para evitar litigios futuros.',
+	],
+	Electricidad: [
+		'Diagnostico y reparacion de fallas electricas, con trabajos certificados y materiales aprobados por norma.',
+		'Instalacion de tableros, mejora de protecciones y mantenciones preventivas.',
+		'Atencion programada y urgencias para viviendas y locales comerciales.',
+	],
+	Pintura: [
+		'Pintura interior y exterior con preparacion de superficies, sellado y terminaciones premium.',
+		'Aplicacion de tratamientos antihumedad y proteccion UV para fachadas.',
+		'Asesoria de color y presupuesto detallado segun metros cuadrados.',
+	],
+	Jardineria: [
+		'Mantencion de jardines, podas y renovacion de areas verdes con riego automatico.',
+		'Se incluye fertilizacion, control de plagas y diseño de especies.',
+		'Planes mensuales para hogares y condominios.',
+	],
+	Limpieza: [
+		'Limpieza profunda post obra, sanitizacion y mantencion de oficinas y hogares.',
+		'Se utiliza maquinaria industrial para vidrios, alfombras y pisos delicados.',
+		'Planes recurrentes y servicio express en 24 horas.',
+	],
+	'Mecanica Automotriz': [
+		'Diagnostico por scanner, mantencion preventiva y reparacion de frenos.',
+		'Se trabaja con repuestos garantizados y pruebas de ruta incluidas.',
+		'Atencion programada con entrega de informe tecnico.',
+	],
+	'Tecnicos en Computacion': [
+		'Formateo, respaldo, limpieza interna y armado de equipos a medida.',
+		'Soporte remoto y presencial para redes domesticas y pymes.',
+		'Recuperacion de datos y optimizacion de rendimiento.',
+	],
+	'Fletes y Mudanzas': [
+		'Embalaje seguro, traslado por hora y seguros de carga incluidos.',
+		'Se coordinan rutas para mudanzas dentro y fuera de Santiago.',
+		'Equipo profesional con control de inventario al retiro y entrega.',
+	],
+}
+
+const comunaAddresses = {
+	'Stgo centro': 'Alameda 100, Santiago Centro',
+	'San Miguel': 'Gran Avenida 5120, San Miguel',
+	'Las Condes': 'Av. Apoquindo 4501, Las Condes',
+	'Ñuñoa': 'Irarrázaval 2400, Ñuñoa',
+	'Providencia': 'Av. Providencia 1550, Providencia',
+	'La Reina': 'Av. Larrain 9000, La Reina',
+	'Independencia': 'Av. Independencia 2150, Independencia',
+}
+
+const comunaDetailIntro = {
+	'Stgo centro': 'Cobertura en barrios historicos y edificios de alta densidad.',
+	'San Miguel': 'Atencion a condominios y viviendas familiares con respuesta rapida.',
+	'Las Condes': 'Servicios premium con coordinacion de horarios y garantia extendida.',
+	'Ñuñoa': 'Enfoque en viviendas tradicionales y departamentos nuevos.',
+	'Providencia': 'Soporte para oficinas, locales comerciales y hogares.',
+	'La Reina': 'Trabajo en casas con jardines y soluciones personalizadas.',
+	'Independencia': 'Cobertura para zonas mixtas con atencion flexible.',
+}
+
+const getDetailData = (service) => {
+	const type = service.id.split('-')[0]
+	const comuna = service.comuna
+	const baseDescription = detailText[type] ?? detailText.Gasfiteria
+	const comunaIntro = comunaDetailIntro[comuna] ?? ''
+	const longDescription = [
+		comunaIntro,
+		...baseDescription,
+		`Direccion de atencion: ${comunaAddresses[comuna] ?? 'Santiago'}.`,
+	].filter(Boolean)
+	const address = comunaAddresses[comuna] ?? 'Alameda 100, Santiago'
+	const mapUrl = `${mapUrlBase}${encodeURIComponent(address)},%20Chile&output=embed`
+
+	return {
+		longDescription,
+		address,
+		mapUrl,
+	}
 }
 
 function App() {
@@ -166,7 +248,10 @@ function App() {
 		{ label: 'Profesiones', value: `${services.length}` },
 	]
 
-	if (selectedServiceId === featuredServiceId && featuredService) {
+	const selectedService = flatServices.find((service) => service.id === selectedServiceId)
+	const selectedDetail = selectedService ? getDetailData(selectedService) : null
+
+	if (selectedService && selectedDetail) {
 		return (
 			<div className="page">
 				<section className="detail">
@@ -180,32 +265,32 @@ function App() {
 					<div className="detail__grid">
 						<div className="detail__content">
 							<p className="detail__eyebrow">Detalle del servicio</p>
-							<h1>{featuredService.title}</h1>
-							<p className="detail__address">{featuredDetail.address}</p>
+							<h1>{selectedService.title}</h1>
+							<p className="detail__address">{selectedDetail.address}</p>
 							<div className="detail__meta">
-								<span className="chip">{featuredService.comuna}</span>
-								<span className="detail__type">{featuredServiceId.split('-')[0]}</span>
+								<span className="chip">{selectedService.comuna}</span>
+								<span className="detail__type">{selectedServiceId.split('-')[0]}</span>
 							</div>
 							<div className="detail__description">
-								{featuredDetail.longDescription.map((text) => (
+								{selectedDetail.longDescription.map((text) => (
 									<p key={text}>{text}</p>
 								))}
 							</div>
 							<div className="detail__contacts">
-								<a href={`tel:${featuredService.phone}`} className="meta">
-									{featuredService.phone}
+								<a href={`tel:${selectedService.phone}`} className="meta">
+									{selectedService.phone}
 								</a>
-								<a href={`mailto:${featuredService.email}`} className="meta">
-									{featuredService.email}
+								<a href={`mailto:${selectedService.email}`} className="meta">
+									{selectedService.email}
 								</a>
 							</div>
 						</div>
 						<div className="detail__media">
-							<img src={featuredService.image} alt={featuredService.title} />
+							<img src={selectedService.image} alt={selectedService.title} />
 							<div className="detail__map">
 								<iframe
 									title="Mapa Alameda 100"
-									src={featuredDetail.mapUrl}
+									src={selectedDetail.mapUrl}
 									loading="lazy"
 									referrerPolicy="no-referrer-when-downgrade"
 								></iframe>
@@ -299,16 +384,16 @@ function App() {
 							{group.items.map((service) => (
 								<article
 									key={service.id}
-									className={`card${service.id === featuredServiceId ? ' card--clickable' : ''}`}
-									role={service.id === featuredServiceId ? 'button' : undefined}
-									tabIndex={service.id === featuredServiceId ? 0 : undefined}
+									className={`card${featuredServiceIds.includes(service.id) ? ' card--clickable' : ''}`}
+									role={featuredServiceIds.includes(service.id) ? 'button' : undefined}
+									tabIndex={featuredServiceIds.includes(service.id) ? 0 : undefined}
 									onClick={() =>
-										service.id === featuredServiceId
+										featuredServiceIds.includes(service.id)
 											? setSelectedServiceId(service.id)
 											: null
 									}
 									onKeyDown={(event) => {
-										if (service.id !== featuredServiceId) {
+										if (!featuredServiceIds.includes(service.id)) {
 											return
 										}
 
