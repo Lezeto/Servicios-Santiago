@@ -128,7 +128,6 @@ const services = serviceTemplates.map((template, templateIndex) => {
 
 const comunaBadges = comunas
 const flatServices = services.flatMap((group) => group.items)
-const featuredServiceIds = flatServices.slice(0, 7).map((service) => service.id)
 const mapUrlBase = 'https://www.google.com/maps?q='
 
 const detailText = {
@@ -289,7 +288,7 @@ function App() {
 							<img src={selectedService.image} alt={selectedService.title} />
 							<div className="detail__map">
 								<iframe
-									title="Mapa Alameda 100"
+									title={`Mapa ${selectedDetail.address}`}
 									src={selectedDetail.mapUrl}
 									loading="lazy"
 									referrerPolicy="no-referrer-when-downgrade"
@@ -384,19 +383,11 @@ function App() {
 							{group.items.map((service) => (
 								<article
 									key={service.id}
-									className={`card${featuredServiceIds.includes(service.id) ? ' card--clickable' : ''}`}
-									role={featuredServiceIds.includes(service.id) ? 'button' : undefined}
-									tabIndex={featuredServiceIds.includes(service.id) ? 0 : undefined}
-									onClick={() =>
-										featuredServiceIds.includes(service.id)
-											? setSelectedServiceId(service.id)
-											: null
-									}
+									className="card card--clickable"
+									role="button"
+									tabIndex={0}
+									onClick={() => setSelectedServiceId(service.id)}
 									onKeyDown={(event) => {
-										if (!featuredServiceIds.includes(service.id)) {
-											return
-										}
-
 										if (event.key === 'Enter' || event.key === ' ') {
 											event.preventDefault()
 											setSelectedServiceId(service.id)
