@@ -17,7 +17,7 @@ const serviceTemplates = [
 		baseName: 'Gasfiter Pro',
 		emailDomain: 'gasfiterpro.cl',
 		description:
-			'Reparacion de fugas, griferia y calefont con atencion programada y soporte de emergencia.',
+			'Soluciones rápidas y duraderas en instalaciones de agua y gas, con atención de urgencias y materiales certificados.',
 		image:
 			'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80',
 	},
@@ -26,7 +26,7 @@ const serviceTemplates = [
 		baseName: 'Llaves Seguras',
 		emailDomain: 'llavesseguras.cl',
 		description:
-			'Aperturas sin dano, cambios de combinacion y refuerzo de cerraduras residenciales.',
+			'Apertura profesional, cambio de cilindros y refuerzo de puertas con asesoría en seguridad.',
 		image:
 			'https://images.unsplash.com/photo-1516822003754-cca485356ecb?auto=format&fit=crop&w=900&q=80',
 	},
@@ -35,7 +35,7 @@ const serviceTemplates = [
 		baseName: 'Estudio Legal',
 		emailDomain: 'estudiolegal.cl',
 		description:
-			'Asesorias en derecho civil, familia y laboral con seguimiento mensual de casos.',
+			'Equipo legal especializado en civil, familia y laboral, con acompañamiento y prevención de litigios.',
 		image:
 			'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
 	},
@@ -44,7 +44,7 @@ const serviceTemplates = [
 		baseName: 'Electro Asistencia',
 		emailDomain: 'electroasistencia.cl',
 		description:
-			'Tableros, cortocircuitos y certificacion SEC para hogares y pequenos comercios.',
+			'Reparación de fallas eléctricas, instalación de tableros y certificación SEC para viviendas y comercios.',
 		image:
 			'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
 	},
@@ -53,7 +53,7 @@ const serviceTemplates = [
 		baseName: 'Pintura Urbana',
 		emailDomain: 'pinturaurbana.cl',
 		description:
-			'Pintura interior y exterior, sellos antihumedad y acabados premium.',
+			'Pintura profesional para interiores y exteriores, tratamientos antihumedad y asesoría de color.',
 		image:
 			'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80',
 	},
@@ -62,7 +62,7 @@ const serviceTemplates = [
 		baseName: 'Jardines Verdes',
 		emailDomain: 'jardinesverdes.cl',
 		description:
-			'Mantencion de jardines, podas y riego automatico para areas residenciales.',
+			'Mantención, diseño y renovación de jardines, podas y riego automático para hogares y condominios.',
 		image:
 			'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80',
 	},
@@ -71,7 +71,7 @@ const serviceTemplates = [
 		baseName: 'Limpieza Total',
 		emailDomain: 'limpiezatotal.cl',
 		description:
-			'Limpieza profunda post obra y sanitizacion de oficinas y hogares.',
+			'Limpieza post obra, sanitización profesional y planes recurrentes para hogares y oficinas.',
 		image:
 			'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80',
 	},
@@ -80,7 +80,7 @@ const serviceTemplates = [
 		baseName: 'Motor Expert',
 		emailDomain: 'motorexpert.cl',
 		description:
-			'Diagnostico por scanner, frenos y mantencion preventiva para todo tipo de vehiculos.',
+			'Mecánica automotriz: diagnóstico, mantención preventiva y reparación con repuestos garantizados.',
 		image:
 			'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80',
 	},
@@ -89,7 +89,7 @@ const serviceTemplates = [
 		baseName: 'Soporte PC',
 		emailDomain: 'soporte-pc.cl',
 		description:
-			'Formateo, respaldo, limpieza y armado de equipos con soporte remoto.',
+			'Soporte técnico: formateo, armado, limpieza y recuperación de datos para equipos y redes.',
 		image:
 			'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
 	},
@@ -98,7 +98,7 @@ const serviceTemplates = [
 		baseName: 'Mudanzas Urbanas',
 		emailDomain: 'mudanzasurbanas.cl',
 		description:
-			'Embalaje seguro, traslados por hora y seguro de carga incluido.',
+			'Mudanzas y fletes: embalaje seguro, traslado eficiente y control de inventario en cada entrega.',
 		image:
 			'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=900&q=80',
 	},
@@ -109,13 +109,107 @@ const services = serviceTemplates.map((template, templateIndex) => {
 		const index = templateIndex * comunas.length + comunaIndex + 1
 		const phone = `+56 9 ${7000 + index} ${2000 + comunaIndex}`
 		const emailHandle = `contacto${index}`
+		// Descripciones únicas por comuna y tipo
+		const uniqueDescriptions = {
+			Gasfiteria: [
+				'Soluciones rápidas en Stgo centro para instalaciones antiguas.',
+				'San Miguel: atención urgente y mejoras de presión.',
+				'Las Condes: materiales certificados y garantía extendida.',
+				'Ñuñoa: diagnóstico y reparación de filtraciones.',
+				'Providencia: soporte para oficinas y hogares.',
+				'La Reina: mantención de calefont y grifería.',
+				'Independencia: urgencias y recomendaciones preventivas.'
+			],
+			Cerrajeria: [
+				'Stgo centro: apertura profesional y refuerzo de puertas.',
+				'San Miguel: duplicado de llaves y cambio de cilindros.',
+				'Las Condes: asesoría en seguridad premium.',
+				'Ñuñoa: refuerzo de cerraduras tradicionales.',
+				'Providencia: instalación de alta seguridad.',
+				'La Reina: evaluación en terreno personalizada.',
+				'Independencia: atención flexible y presupuesto detallado.'
+			],
+			Abogacia: [
+				'Stgo centro: equipo legal para casos civiles.',
+				'San Miguel: asesoría en familia y laboral.',
+				'Las Condes: prevención de litigios y seguimiento mensual.',
+				'Ñuñoa: soluciones claras y tiempos rápidos.',
+				'Providencia: acompañamiento integral.',
+				'La Reina: orientación preventiva personalizada.',
+				'Independencia: atención flexible y informes mensuales.'
+			],
+			Electricidad: [
+				'Stgo centro: reparación de fallas eléctricas.',
+				'San Miguel: instalación de tableros y protecciones.',
+				'Las Condes: certificación SEC y urgencias.',
+				'Ñuñoa: mantención preventiva en viviendas.',
+				'Providencia: atención programada para comercios.',
+				'La Reina: mejoras de protecciones eléctricas.',
+				'Independencia: trabajos certificados y materiales aprobados.'
+			],
+			Pintura: [
+				'Stgo centro: pintura interior con terminaciones premium.',
+				'San Miguel: tratamientos antihumedad y asesoría de color.',
+				'Las Condes: protección UV para fachadas.',
+				'Ñuñoa: preparación de superficies y sellado.',
+				'Providencia: presupuesto detallado por metros cuadrados.',
+				'La Reina: acabados premium en exteriores.',
+				'Independencia: pintura personalizada y asesoría.'
+			],
+			Jardineria: [
+				'Stgo centro: mantención de áreas verdes urbanas.',
+				'San Miguel: podas y riego automático.',
+				'Las Condes: diseño de jardines y fertilización.',
+				'Ñuñoa: renovación de especies y control de plagas.',
+				'Providencia: planes mensuales para hogares.',
+				'La Reina: jardines personalizados y riego.',
+				'Independencia: atención flexible y renovación de áreas.'
+			],
+			Limpieza: [
+				'Stgo centro: limpieza post obra y sanitización.',
+				'San Miguel: servicio express en 24 horas.',
+				'Las Condes: maquinaria industrial para pisos delicados.',
+				'Ñuñoa: mantención de oficinas y hogares.',
+				'Providencia: planes recurrentes y limpieza profunda.',
+				'La Reina: sanitización profesional y vidrios.',
+				'Independencia: atención flexible y limpieza de alfombras.'
+			],
+			'Mecanica Automotriz': [
+				'Stgo centro: diagnóstico por scanner y frenos.',
+				'San Miguel: mantención preventiva y pruebas de ruta.',
+				'Las Condes: repuestos garantizados y atención programada.',
+				'Ñuñoa: reparación técnica y entrega de informe.',
+				'Providencia: atención a todo tipo de vehículos.',
+				'La Reina: diagnóstico y mantención personalizada.',
+				'Independencia: urgencias y pruebas de ruta incluidas.'
+			],
+			'Tecnicos en Computacion': [
+				'Stgo centro: formateo y recuperación de datos.',
+				'San Miguel: soporte remoto y armado de equipos.',
+				'Las Condes: limpieza interna y optimización.',
+				'Ñuñoa: redes domésticas y pymes.',
+				'Providencia: soporte presencial y recuperación.',
+				'La Reina: armado a medida y limpieza.',
+				'Independencia: atención flexible y respaldo de datos.'
+			],
+			'Fletes y Mudanzas': [
+				'Stgo centro: embalaje seguro y traslado por hora.',
+				'San Miguel: control de inventario y rutas coordinadas.',
+				'Las Condes: seguros de carga y mudanzas premium.',
+				'Ñuñoa: equipo profesional y entrega eficiente.',
+				'Providencia: mudanzas dentro y fuera de Santiago.',
+				'La Reina: embalaje personalizado y control de entrega.',
+				'Independencia: atención flexible y seguro incluido.'
+			]
+		}
+		const description = uniqueDescriptions[template.type][comunaIndex]
 		return {
 			id: `${template.type}-${comuna}`,
 			title: `${template.baseName} ${comuna}`,
 			phone,
 			email: `${emailHandle}@${template.emailDomain}`,
 			comuna,
-			description: template.description,
+			description,
 			image: template.image,
 		}
 	})
